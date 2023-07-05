@@ -2,18 +2,18 @@ from django.shortcuts import render
 
 # Create your views here.
 from rest_framework.response import Response
-from rest_framework import status, generics
+from rest_framework import status, views
 
 from .models import *
 from .serializers import *
 
 
-class AuthorView(generics.GenericAPIView):
+class AuthorView(views.APIView):
     def get(self,request):
         authors = Author.objects.all()
 
         serializer = AuthorSerializer(authors, many=True)
-        return Response(data=list(serializer.data),status=status.HTTP_200_OK)
+        return Response(serializer.data,status=status.HTTP_200_OK,content_type='application/json')
     
     def post(self,request):
         print(request.data)
@@ -25,7 +25,7 @@ class AuthorView(generics.GenericAPIView):
     
 
 
-class BookView(generics.GenericAPIView):
+class BookView(views.APIView):
     def get(self,request):
         book = Book.objects.all()
         serializer = BookSerializer(book, many=True)
