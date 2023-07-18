@@ -9,18 +9,18 @@ from .serializers import *
 
 
 class AuthorView(views.APIView):
-    def get(self,request):
-        authors = Author.objects.all()
-
-        serializer = AuthorSerializer(authors, many=True)
-        return Response(serializer.data,status=status.HTTP_200_OK,content_type='application/json')
-    
     def post(self,request):
         print(request.data)
         serializer = AuthorSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
         return Response(data={"message":'created'},status=status.HTTP_201_CREATED)
+    def get(self,request):
+        authors = Author.objects.all()
+
+        serializer = AuthorSerializer(authors, many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK,content_type='application/json')
+    
         
     
 
