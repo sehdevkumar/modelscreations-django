@@ -10,7 +10,6 @@ from .serializers import *
 
 class AuthorView(views.APIView):
     def post(self,request):
-        print(request.data)
         serializer = AuthorSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -20,6 +19,11 @@ class AuthorView(views.APIView):
 
         serializer = AuthorSerializer(authors, many=True)
         return Response(serializer.data,status=status.HTTP_200_OK,content_type='application/json')
+    
+    def delete(self,request):
+        authors = Author.objects.get(id=request.GET.get("id"))
+        authors.delete()
+        return Response(data={'message':'Deleted'},status=status.HTTP_200_OK,content_type='application/json')
     
         
     
